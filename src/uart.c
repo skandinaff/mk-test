@@ -25,7 +25,8 @@ void uart_init(void) {
 
     // Enable USART2 interrupt
 
-    NVIC_EnableIRQ(USART2_IRQn);
+    NVIC_SetPriority(USART2_IRQn, 0);
+    NVIC_EnableIRQ(USART2_IRQn);    
 }
 
 void uart_transmit(const char *data, uint16_t size) {
@@ -38,16 +39,22 @@ void uart_transmit(const char *data, uint16_t size) {
 
 void USART2_IRQHandler(void) {
     if (USART2->ISR & USART_ISR_RXNE) {
-        char received_char = USART2->RDR;  // Read received character
+        char received_char = USART2->RDR;  // Read the received character from USART2
 
-        // Check for carriage return, indicating end of command
-        if (received_char == '\r') {
-            uart_buffer[uart_buffer_index] = '\0';  // Null-terminate the command
-            process_command(uart_buffer);  // Process the received command
-            uart_buffer_index = 0;  // Reset the buffer for the next command
-        } else if (uart_buffer_index < UART_BUFFER_SIZE - 1) {
-            uart_buffer[uart_buffer_index++] = received_char;  // Store character
+        // Check if the received character is the end of a command (carriage return)
+        if (received_char == '\n') {
+            uart_buffer[uart_buffer_index] = '\0';  // Null-terminate the command string
+            process_command(uart_buffer);  // Process the complete command
+            uart_buffer_index = 0;  // Reset the buffer index for the next command
+        } else {
+            // If it's not the end of a command, append the character to the buffer
+            if (uart_buffer_index < UART_BUFFER_SIZE - 1) {
+                //uart_buffer[uart_buffer_index++] = received_char;
+                
+                uart_buffer[uart_buffer_index] = USART2->RDR & 0x0FF; // reading RDR clears RXNE flag
+			    uart_buffer_index++;
+            }
+            // Optionally handle buffer overflow here
         }
-        // Optionally handle buffer overflow here
     }
 }

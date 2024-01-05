@@ -56,7 +56,7 @@ void update_led_status(void) {
 
         if (led_timer == 0) {
             // Turn off the LED
-            GPIOA->ODR &= ~(1 << led_id);
+            GPIOB->ODR &= ~(1 << led_id);
 
             // Send the "led-off" message
             char message[20];

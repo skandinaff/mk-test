@@ -9,8 +9,9 @@ void delay(uint32_t count) {
 }
 
 int main(void) {
+    __enable_irq(); // Enable global interrupts
     uart_init();
-    uart_transmit("Hello!", 5);
+    //uart_transmit("Hello!\r\n", 7);
     while (1) {
         update_led_status();
     }
