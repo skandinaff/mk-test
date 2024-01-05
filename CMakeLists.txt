@@ -15,4 +15,4 @@ set(CMAKE_C_LINK_EXECUTABLE arm-none-eabi-gcc)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=cortex-m0plus -mthumb")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T ${CMAKE_SOURCE_DIR}/linker_script.ld")
 
-add_executable(mk-test stc/main.c startup/startup_stm32l011xx.s)
+add_executable(mk-test src/main.c startup/startup_stm32l011k4tx.s)
