@@ -2,6 +2,7 @@
     "files.associations": {
         "stm32l0xx.h": "c",
         "string.h": "c",
-        "commands.h": "c"
+        "commands.h": "c",
+        "uart.h": "c"
     }
 }
