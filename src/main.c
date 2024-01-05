@@ -8,17 +8,25 @@ void delay(uint32_t count) {
 
 int main(void) {
     // Enable GPIOA clock
-    RCC->IOPENR |= RCC_IOPENR_GPIOAEN;
+    RCC->IOPENR |= RCC_IOPENR_GPIOBEN;
 
     // Set PA5 (connected to the LED) as output
-    GPIOA->MODER &= ~(GPIO_MODER_MODE5);
-    GPIOA->MODER |= GPIO_MODER_MODE5_0;
+    GPIOB->MODER &= ~(GPIO_MODER_MODE4);
+    GPIOB->MODER |= GPIO_MODER_MODE4_0;
+
+    GPIOB->MODER &= ~(GPIO_MODER_MODE5);
+    GPIOB->MODER |= GPIO_MODER_MODE5_0;
+
+    GPIOB->MODER &= ~(GPIO_MODER_MODE3);
+    GPIOB->MODER |= GPIO_MODER_MODE3_0;
 
     while(1) {
         // Toggle PA5
-        GPIOA->ODR ^= GPIO_ODR_OD5;
+        GPIOB->ODR ^= GPIO_ODR_OD4;
+        GPIOB->ODR ^= GPIO_ODR_OD5;
+        GPIOB->ODR ^= GPIO_ODR_OD3;
 
         // Delay
-        delay(100000);
+        delay(50000);
     }
 }

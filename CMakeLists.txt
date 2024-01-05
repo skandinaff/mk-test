@@ -25,10 +25,13 @@ set(EXECUTABLE ${CMAKE_PROJECT_NAME})
 # Source files
 set(src_core_src_SRCS 
     ${CMAKE_SOURCE_DIR}/Src/main.c
+    #${CMAKE_SOURCE_DIR}/Src/system_stm32l0xx.c
 )
 
 set(src_core_startup_SRCS 
-    ${CMAKE_SOURCE_DIR}/Startup/startup_stm32l011k4tx.s)
+    #${CMAKE_SOURCE_DIR}/Startup/startup_stm32l011k4tx.s)
+    ${CMAKE_SOURCE_DIR}/Startup/startup_stm32l011xx.s
+    ${CMAKE_SOURCE_DIR}/Drivers/system_stm32l0xx.c)
 
 # Include directories
 set(include_DIRS
