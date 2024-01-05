@@ -24,7 +24,6 @@
 
             /* If you use external loader, add additional arguments */
             //"serverArgs": ["--extload", "path/to/ext/loader.stldr"],
-            //"serverArgs": ["-hardRst"],
         }
     ]
 }

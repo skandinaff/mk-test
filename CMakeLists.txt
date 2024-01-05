@@ -31,12 +31,12 @@ set(src_core_src_SRCS
 
 set(src_core_startup_SRCS 
     ${CMAKE_SOURCE_DIR}/Startup/startup_stm32l011xx.s
-    ${CMAKE_SOURCE_DIR}/Drivers/system_stm32l0xx.c)
+    ${CMAKE_SOURCE_DIR}/Drivers/Src/system_stm32l0xx.c)
 
 # Include directories
 set(include_DIRS
     ${CMAKE_SOURCE_DIR}/Include
-    ${CMAKE_SOURCE_DIR}/Drivers
+    ${CMAKE_SOURCE_DIR}/Drivers/Include
     # Add other include directories as necessary
 )
 
