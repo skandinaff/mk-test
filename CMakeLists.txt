@@ -1,18 +1,103 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.22)
+
 project(mk-test)
+enable_language(C CXX ASM)
+message("Build type: " ${CMAKE_BUILD_TYPE})
 
-enable_language(ASM C)
-set(CMAKE_C_STANDARD 99)
+# Setup compiler settings
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS ON)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
 
-set(CMAKE_SYSTEM_NAME Generic)
-set(CMAKE_SYSTEM_PROCESSOR arm)
-set(CMAKE_CROSSCOMPILING 1)
+# Core MCU flags, CPU, instruction set setup
+set(CPU_PARAMETERS
+    -mthumb
+    -mcpu=cortex-m0plus
+)
 
-set(CMAKE_C_COMPILER arm-none-eabi-gcc)
-set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
-set(CMAKE_C_LINK_EXECUTABLE arm-none-eabi-gcc)
+# Set linker script
+set(linker_script_SRC ${CMAKE_SOURCE_DIR}/STM32L011K4Tx_FLASH.ld)
+set(EXECUTABLE ${CMAKE_PROJECT_NAME})
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=cortex-m0plus -mthumb")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T ${CMAKE_SOURCE_DIR}/linker_script.ld")
+# Source files
+set(src_core_src_SRCS 
+    ${CMAKE_SOURCE_DIR}/Src/main.c
+)
 
-add_executable(mk-test src/main.c startup/startup_stm32l011k4tx.s)
+set(src_core_startup_SRCS 
+    ${CMAKE_SOURCE_DIR}/Startup/startup_stm32l011k4tx.s)
+
+# Include directories
+set(include_DIRS
+    ${CMAKE_SOURCE_DIR}/Include
+    ${CMAKE_SOURCE_DIR}/Drivers
+    # Add other include directories as necessary
+)
+
+# Symbols definition
+set(symbols_SYMB
+    "DEBUG"
+    "STM32L011xx"
+)
+
+# Executable files
+add_executable(${EXECUTABLE} 
+    ${src_core_src_SRCS}
+    ${src_core_startup_SRCS})
+
+# Include paths for each of the compiler
+target_include_directories(${EXECUTABLE} PRIVATE ${include_DIRS})
+
+# Compiler and linker options
+target_compile_options(${EXECUTABLE} PRIVATE
+    ${CPU_PARAMETERS}
+    -Wall
+    -Wextra
+    -Wpedantic
+    -Wno-unused-parameter
+    $<$<COMPILE_LANGUAGE:C>:
+
+    >
+    $<$<COMPILE_LANGUAGE:CXX>:
+        # Additional CXX flags
+    >
+    $<$<COMPILE_LANGUAGE:ASM>:
+        -x assembler-with-cpp
+    >
+    $<$<CONFIG:Debug>:
+        -Og -g3 -ggdb
+    >
+    $<$<CONFIG:Release>:
+        -Os -g0
+    >
+)
+
+# Setup linker parameters
+target_link_options(${EXECUTABLE} PRIVATE
+    -T${linker_script_SRC}
+    ${CPU_PARAMETERS}
+    -Wl,-Map=${CMAKE_PROJECT_NAME}.map
+    --specs=nosys.specs
+    -Wl,--start-group
+    -lc
+    -lm
+    -Wl,--end-group
+    -Wl,--print-memory-usage
+)
+
+# Project symbols
+target_compile_definitions(${EXECUTABLE} PRIVATE
+    ${symbols_SYMB}
+    $<$<CONFIG:Debug>:DEBUG>
+)
+
+# Convert output to hex and binary
+add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${EXECUTABLE}> ${EXECUTABLE}.hex
+    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${EXECUTABLE}> ${EXECUTABLE}.bin
+)
+
+message("Exiting ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt")
