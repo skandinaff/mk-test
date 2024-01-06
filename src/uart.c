@@ -2,7 +2,7 @@
 #include "../include/uart.h"
 #include "../include/commands.h"
 
-#define UART_BUFFER_SIZE 64
+#define UART_BUFFER_SIZE 320
 
 static char uart_buffer[UART_BUFFER_SIZE];
 static uint16_t uart_buffer_index = 0;
@@ -18,14 +18,14 @@ void uart_init(void) {
     GPIOA->AFR[1] |= (0x4 << (4 * (9 - 8))) | (0x4 << (4 * (10 - 8))); // Set AF4 for USART2
 
     // Configure USART2 (8 data bits, no parity, 1 stop bit)
-    USART2->BRR = (uint16_t)(SystemCoreClock / UART_BAUD_RATE);
+    USART2->BRR = (uint16_t)(SystemCoreClock / BAUD_RATE);
     USART2->CR1 = USART_CR1_TE | USART_CR1_RE | USART_CR1_UE;
     
     USART2->CR1 |= USART_CR1_RXNEIE;
 
     // Enable USART2 interrupt
 
-    NVIC_SetPriority(USART2_IRQn, 0);
+    //NVIC_SetPriority(USART2_IRQn, 0);
     NVIC_EnableIRQ(USART2_IRQn);    
 }
 
@@ -42,7 +42,7 @@ void USART2_IRQHandler(void) {
         char received_char = USART2->RDR;  // Read the received character from USART2
 
         // Check if the received character is the end of a command (carriage return)
-        if (received_char == '\n') {
+        if (received_char == '\r') {
             uart_buffer[uart_buffer_index] = '\0';  // Null-terminate the command string
             process_command(uart_buffer);  // Process the complete command
             uart_buffer_index = 0;  // Reset the buffer index for the next command
@@ -51,7 +51,7 @@ void USART2_IRQHandler(void) {
             if (uart_buffer_index < UART_BUFFER_SIZE - 1) {
                 //uart_buffer[uart_buffer_index++] = received_char;
                 
-                uart_buffer[uart_buffer_index] = USART2->RDR & 0x0FF; // reading RDR clears RXNE flag
+                uart_buffer[uart_buffer_index] = USART2->RDR;// & 0x0FF; // reading RDR clears RXNE flag
 			    uart_buffer_index++;
             }
             // Optionally handle buffer overflow here

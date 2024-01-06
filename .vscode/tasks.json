@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "shell",
+            "type": "cppbuild",
             "label": "Re-build project",
             "command": "cmake",
             "args": [
@@ -60,6 +60,7 @@
                 "-DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE",
                 "-DCMAKE_BUILD_TYPE:STRING=Debug",
                 "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=gcc-arm-none-eabi.cmake",
+                "-DUART_BAUD_RATE=115200",
                 "-Bbuild",
                 "-G",
                 "Ninja"
@@ -68,6 +69,7 @@
                 "cwd": "${workspaceFolder}"
             },
             "problemMatcher": []
-        }
+        },
+       
     ]
 }

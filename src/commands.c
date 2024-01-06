@@ -44,7 +44,7 @@ void led_control(uint8_t id, uint32_t duration_ms) {
     GPIOB->ODR |= (1 << led_id);          // Set pin high to turn on LED
 }
 void echo_data(const char *data, uint16_t len) {
-    char buffer[306]; // Maximum length of "data: " + 300 chars + "\r\n"
+    char buffer[302]; // Maximum length of "data: " + 300 chars + "\r\n"
     sprintf(buffer, "data: %.*s\r\n", len, data);
     uart_transmit(buffer, strlen(buffer));
 }

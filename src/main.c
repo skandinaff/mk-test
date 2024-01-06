@@ -23,10 +23,8 @@ void tim2_init(void) {
 
 
 int main(void) {
-    __enable_irq(); // Enable global interrupts
     uart_init();
     tim2_init();
-    //uart_transmit("Hello!\r\n", 7);
     while (1) {
     }
 }

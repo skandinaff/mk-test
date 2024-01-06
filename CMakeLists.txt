@@ -103,4 +103,10 @@ add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${EXECUTABLE}> ${EXECUTABLE}.bin
 )
 
+# Set a default baud rate
+set(UART_BAUD_RATE "9600" CACHE STRING "Default UART baud rate")
+
+# Add the baud rate as a definition to the compiler
+add_definitions(-DUART_BAUD_RATE=${UART_BAUD_RATE})
+
 message("Exiting ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt")

@@ -3,8 +3,10 @@
 
 #include "../Drivers/Include/stm32l011xx.h"
 
-#ifndef UART_BAUD_RATE
-#define UART_BAUD_RATE 9600  // Default baud rate if not specified during build
+#ifdef UART_BAUD_RATE
+#define BAUD_RATE UART_BAUD_RATE
+#else
+#define BAUD_RATE 9600  // Default baud rate
 #endif
 
 void uart_init(void);
