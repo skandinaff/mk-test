@@ -30,6 +30,11 @@ void process_command(const char *cmd) {
 }
 
 void led_control(uint8_t id, uint32_t duration_ms) {
+
+    if (id != PIN1 && id != PIN2) {
+        uart_transmit("ERROR\r\n", 7);
+        return;  // Invalid ID, return from the function
+    }
     // Enable clock for GPIOB
     RCC->IOPENR |= RCC_IOPENR_GPIOBEN;
 

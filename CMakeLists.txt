@@ -109,4 +109,12 @@ set(UART_BAUD_RATE "9600" CACHE STRING "Default UART baud rate")
 # Add the baud rate as a definition to the compiler
 add_definitions(-DUART_BAUD_RATE=${UART_BAUD_RATE})
 
+# Set default values for PIN1 and PIN2
+set(PIN1 "4" CACHE STRING "Default GPIO pin number for PIN1")
+set(PIN2 "5" CACHE STRING "Default GPIO pin number for PIN2")
+
+# Add definitions for PIN1 and PIN2
+add_definitions(-DPIN1=${PIN1})
+add_definitions(-DPIN2=${PIN2})
+
 message("Exiting ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt")

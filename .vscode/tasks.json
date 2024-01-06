@@ -61,6 +61,8 @@
                 "-DCMAKE_BUILD_TYPE:STRING=Debug",
                 "-DCMAKE_TOOLCHAIN_FILE:FILEPATH=gcc-arm-none-eabi.cmake",
                 "-DUART_BAUD_RATE=115200",
+                "-DPIN1=4",
+                "-DPIN2=5",
                 "-Bbuild",
                 "-G",
                 "Ninja"
