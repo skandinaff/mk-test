@@ -110,11 +110,15 @@ set(UART_BAUD_RATE "9600" CACHE STRING "Default UART baud rate")
 add_definitions(-DUART_BAUD_RATE=${UART_BAUD_RATE})
 
 # Set default values for PIN1 and PIN2
-set(PIN1 "4" CACHE STRING "Default GPIO pin number for PIN1")
-set(PIN2 "5" CACHE STRING "Default GPIO pin number for PIN2")
+set(LED_PIN1 "4" CACHE STRING "Default GPIO pin number for PIN1")
+set(LED_PIN2 "5" CACHE STRING "Default GPIO pin number for PIN2")
+set(LED_PIN3 "6" CACHE STRING "Default GPIO pin number for PIN3")
+set(LED_PIN4 "7" CACHE STRING "Default GPIO pin number for PIN4")
 
 # Add definitions for PIN1 and PIN2
-add_definitions(-DPIN1=${PIN1})
-add_definitions(-DPIN2=${PIN2})
+add_definitions(-DPIN1=${LED_PIN1})
+add_definitions(-DPIN2=${LED_PIN2})
+add_definitions(-DPIN3=${LED_PIN3})
+add_definitions(-DPIN3=${LED_PIN4})
 
 message("Exiting ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt")

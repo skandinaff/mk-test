@@ -31,7 +31,7 @@ void process_command(const char *cmd) {
 
 void led_control(uint8_t id, uint32_t duration_ms) {
 
-    if (id != PIN1 && id != PIN2) {
+    if (id != LED_PIN1 && id != LED_PIN2 && id != LED_PIN3 && id != LED_PIN4) {
         uart_transmit("ERROR\r\n", 7);
         return;  // Invalid ID, return from the function
     }
