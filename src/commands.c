@@ -43,14 +43,14 @@ void led_control(uint8_t id, uint32_t duration_ms) {
         pinNumber = LED_PIN4;
     } else {
         uart_transmit("ERROR\r\n", 7);
-        return;  // Invalid ID, return from the function
+        return;
     }
 
     led_timers[id] = duration_ms;
     led_ids[id] = pinNumber;
 
     // Turn on the LED by setting the corresponding pin in GPIOB ODR
-    GPIOB->ODR |= (1 << led_ids[id]);          // Set pin high to turn on LED
+    GPIOB->ODR |= (1 << led_ids[id]);          
 }
 void echo_data(const char *data, uint16_t len) {
     char buffer[302]; // Maximum length of "data: " + 300 chars + "\r\n"
@@ -61,13 +61,10 @@ void echo_data(const char *data, uint16_t len) {
 void update_led_status(void) {
     for (uint8_t i = 0; i < NUMBER_OF_LEDS; i++) {
         if (led_timers[i] > 0) {
-            led_timers[i]--;  // Decrement the timer
-
+            led_timers[i]--;
             if (led_timers[i] == 0) {
             // Turn off the LED
             GPIOB->ODR &= ~(1 << led_ids[i]);
-
-            // Send the "led-off" message
             char message[20];
             sprintf(message, "led-off: %d\r\n", i);
             uart_transmit(message, strlen(message));
