@@ -31,7 +31,6 @@ int main(void) {
 void TIM2_IRQHandler(void) {
     if (TIM2->SR & TIM_SR_UIF) {  // Check if update interrupt flag is set
         TIM2->SR &= ~TIM_SR_UIF;  // Clear update interrupt flag
-        // Call the LED update function
         update_led_status();
     }
 }

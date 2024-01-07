@@ -30,8 +30,16 @@ void process_command(const char *cmd) {
 }
 
 void led_control(uint8_t id, uint32_t duration_ms) {
-
-    if (id != LED_PIN1 && id != LED_PIN2 && id != LED_PIN3 && id != LED_PIN4) {
+    uint8_t pinNumber;
+    if (id == 1) {
+        pinNumber = LED_PIN1;
+    } else if (id == 2) {
+        pinNumber = LED_PIN2;
+    } else if (id == 3) {
+        pinNumber = LED_PIN3;
+    } else if (id == 4) {
+        pinNumber = LED_PIN4;
+    } else {
         uart_transmit("ERROR\r\n", 7);
         return;  // Invalid ID, return from the function
     }
@@ -39,10 +47,10 @@ void led_control(uint8_t id, uint32_t duration_ms) {
     RCC->IOPENR |= RCC_IOPENR_GPIOBEN;
 
     // Configure the selected GPIO pin as output
-    GPIOB->MODER &= ~(0x3 << (id * 2));      // Clear mode bits for the pin
-    GPIOB->MODER |= (0x1 << (id * 2));       // Set pin as output
+    GPIOB->MODER &= ~(0x3 << (pinNumber * 2));      // Clear mode bits for the pin
+    GPIOB->MODER |= (0x1 << (pinNumber * 2));       // Set pin as output
 
-    led_id = id;     // Set the global variable for LED ID
+    led_id = pinNumber;     // Set the global variable for LED ID
     led_timer = duration_ms;  // Set the timer
 
     // Turn on the LED by setting the corresponding pin in GPIOB ODR

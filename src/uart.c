@@ -23,9 +23,6 @@ void uart_init(void) {
     
     USART2->CR1 |= USART_CR1_RXNEIE;
 
-    // Enable USART2 interrupt
-
-    //NVIC_SetPriority(USART2_IRQn, 0);
     NVIC_EnableIRQ(USART2_IRQn);    
 }
 
@@ -51,10 +48,13 @@ void USART2_IRQHandler(void) {
             if (uart_buffer_index < UART_BUFFER_SIZE - 1) {
                 //uart_buffer[uart_buffer_index++] = received_char;
                 
-                uart_buffer[uart_buffer_index] = USART2->RDR;// & 0x0FF; // reading RDR clears RXNE flag
+                uart_buffer[uart_buffer_index] = USART2->RDR; // reading RDR clears RXNE flag
 			    uart_buffer_index++;
+            } else {
+                uart_buffer_index = 0;
+                uart_buffer[uart_buffer_index] = '\0';
+                uart_transmit("ERROR: Buffer Overflow\r\n", 25);
             }
-            // Optionally handle buffer overflow here
         }
     }
 }

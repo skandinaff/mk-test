@@ -15,6 +15,20 @@ This project is designed for the STM32 NUCLEO-L011K4 board. It includes a UART i
     - Flash project
     - Run CMake configuration
 
+### Using command line:
+
+Run cmake configuration:
+
+`cmake -S . -B build --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_TOOLCHAIN_FILE:FILEPATH=gcc-arm-none-eabi.cmake -DUART_BAUD_RATE=115200 -DLED_PIN1=4 -DLED_PIN2=5 -DLED_PIN3=3 -DLED_PIN4=0 -Bbuild -G Ninja`
+
+Build project:
+
+`cmake --build build -v -j8`
+
+Flash project:
+
+`STM32_Programmer_CLI --connect port=swd --download build/mk-test.elf -hardRst`
+
 
 ## Build Options
 
@@ -24,5 +38,6 @@ This project is designed for the STM32 NUCLEO-L011K4 board. It includes a UART i
 
 ## Tools Used
 - Visual Studio Code: For development with tasks integration.
-- CMake: For building the project.
+- CMake, Ninja: For building the project.
 - GNU Arm Embedded Toolchain: Compiler and tools for ARM Cortex-M processors.
+- STM32CubeProgrammer: For flashing the firmware to the board.

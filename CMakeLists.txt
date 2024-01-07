@@ -116,9 +116,9 @@ set(LED_PIN3 "6" CACHE STRING "Default GPIO pin number for PIN3")
 set(LED_PIN4 "7" CACHE STRING "Default GPIO pin number for PIN4")
 
 # Add definitions for PIN1 and PIN2
-add_definitions(-DPIN1=${LED_PIN1})
-add_definitions(-DPIN2=${LED_PIN2})
-add_definitions(-DPIN3=${LED_PIN3})
-add_definitions(-DPIN3=${LED_PIN4})
+add_definitions(-DLED_PIN1=${LED_PIN1})
+add_definitions(-DLED_PIN2=${LED_PIN2})
+add_definitions(-DLED_PIN3=${LED_PIN3})
+add_definitions(-DLED_PIN4=${LED_PIN4})
 
 message("Exiting ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt")
