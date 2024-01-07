@@ -5,8 +5,9 @@
 #include <stdlib.h>
 #include "../Drivers/Include/stm32l011xx.h"
 
-static volatile uint32_t led_timer = 0;
-static uint8_t led_id = 0;  // Assuming LED ID corresponds to a GPIO pin
+#define NUMBER_OF_LEDS 4
+static volatile uint32_t led_timers[NUMBER_OF_LEDS] = {0};
+static uint8_t led_id = 0;
 
 void process_command(const char *cmd) {
     if (strncmp(cmd, "set-led ", 8) == 0) {
@@ -43,15 +44,9 @@ void led_control(uint8_t id, uint32_t duration_ms) {
         uart_transmit("ERROR\r\n", 7);
         return;  // Invalid ID, return from the function
     }
-    // Enable clock for GPIOB
-    RCC->IOPENR |= RCC_IOPENR_GPIOBEN;
 
-    // Configure the selected GPIO pin as output
-    GPIOB->MODER &= ~(0x3 << (pinNumber * 2));      // Clear mode bits for the pin
-    GPIOB->MODER |= (0x1 << (pinNumber * 2));       // Set pin as output
-
-    led_id = pinNumber;     // Set the global variable for LED ID
-    led_timer = duration_ms;  // Set the timer
+    led_timers[id] = duration_ms;
+    led_id = pinNumber;
 
     // Turn on the LED by setting the corresponding pin in GPIOB ODR
     GPIOB->ODR |= (1 << led_id);          // Set pin high to turn on LED
@@ -63,11 +58,11 @@ void echo_data(const char *data, uint16_t len) {
 }
 
 void update_led_status(void) {
-    if (led_timer > 0) {
-        // Decrement the timer
-        led_timer--;
+    for (uint8_t i = 0; i < NUMBER_OF_LEDS; i++) {
+        if (led_timers[i] > 0) {
+            led_timers[i]--;  // Decrement the timer
 
-        if (led_timer == 0) {
+            if (led_timers[i] == 0) {
             // Turn off the LED
             GPIOB->ODR &= ~(1 << led_id);
 
@@ -76,5 +71,6 @@ void update_led_status(void) {
             sprintf(message, "led-off: %d\r\n", led_id);
             uart_transmit(message, strlen(message));
         }
+    }
     }
 }

@@ -3,6 +3,7 @@
         "stm32l0xx.h": "c",
         "string.h": "c",
         "commands.h": "c",
-        "uart.h": "c"
+        "uart.h": "c",
+        "system_stm32l0xx.h": "c"
     }
 }
