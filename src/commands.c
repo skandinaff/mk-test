@@ -7,7 +7,8 @@
 
 #define NUMBER_OF_LEDS 4
 static volatile uint32_t led_timers[NUMBER_OF_LEDS] = {0};
-static uint8_t led_id = 0;
+
+static uint8_t led_ids[NUMBER_OF_LEDS] = {0};
 
 void process_command(const char *cmd) {
     if (strncmp(cmd, "set-led ", 8) == 0) {
@@ -46,10 +47,10 @@ void led_control(uint8_t id, uint32_t duration_ms) {
     }
 
     led_timers[id] = duration_ms;
-    led_id = pinNumber;
+    led_ids[id] = pinNumber;
 
     // Turn on the LED by setting the corresponding pin in GPIOB ODR
-    GPIOB->ODR |= (1 << led_id);          // Set pin high to turn on LED
+    GPIOB->ODR |= (1 << led_ids[id]);          // Set pin high to turn on LED
 }
 void echo_data(const char *data, uint16_t len) {
     char buffer[302]; // Maximum length of "data: " + 300 chars + "\r\n"
@@ -64,11 +65,11 @@ void update_led_status(void) {
 
             if (led_timers[i] == 0) {
             // Turn off the LED
-            GPIOB->ODR &= ~(1 << led_id);
+            GPIOB->ODR &= ~(1 << led_ids[i]);
 
             // Send the "led-off" message
             char message[20];
-            sprintf(message, "led-off: %d\r\n", led_id);
+            sprintf(message, "led-off: %d\r\n", led_ids[i]);
             uart_transmit(message, strlen(message));
         }
     }
