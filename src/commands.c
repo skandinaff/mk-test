@@ -69,7 +69,7 @@ void update_led_status(void) {
 
             // Send the "led-off" message
             char message[20];
-            sprintf(message, "led-off: %d\r\n", led_ids[i]);
+            sprintf(message, "led-off: %d\r\n", i);
             uart_transmit(message, strlen(message));
         }
     }

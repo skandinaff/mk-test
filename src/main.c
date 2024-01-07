@@ -12,7 +12,6 @@ void tim2_init(void) {
     TIM2->DIER |= TIM_DIER_UIE;  // Enable update interrupt
     TIM2->CR1 |= TIM_CR1_CEN;  // Enable the timer
     // Enable TIM2 interrupt in NVIC
-
     NVIC_EnableIRQ(TIM2_IRQn);  // Enable TIM2 interrupt in NVIC
 }
 void led_init(void) {

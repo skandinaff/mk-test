@@ -45,8 +45,6 @@ void USART2_IRQHandler(void) {
         } else {
             // If it's not the end of a command, append the character to the buffer
             if (uart_buffer_index < UART_BUFFER_SIZE - 1) {
-                //uart_buffer[uart_buffer_index++] = received_char;
-                
                 uart_buffer[uart_buffer_index] = USART2->RDR; // reading RDR clears RXNE flag
 			    uart_buffer_index++;
             } else {
