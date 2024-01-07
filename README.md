@@ -41,3 +41,6 @@ Flash project:
 - CMake, Ninja: For building the project.
 - GNU Arm Embedded Toolchain: Compiler and tools for ARM Cortex-M processors.
 - STM32CubeProgrammer: For flashing the firmware to the board.
+
+
+![Board image](board.jpg)
