@@ -10,7 +10,6 @@ static uint16_t uart_buffer_index = 0;
 void uart_init(void) {
     RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
     RCC->IOPENR |= RCC_IOPENR_GPIOAEN;
-
     // Configure GPIO pins PA9 (TX) and PA10 (RX) in Alternate Function mode
     // PA9: AF4 (USART2_TX), PA10: AF4 (USART2_RX)
     GPIOA->MODER &= ~(GPIO_MODER_MODE9 | GPIO_MODER_MODE10); // Clear mode bits

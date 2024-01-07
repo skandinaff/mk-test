@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is designed for the STM32 NUCLEO-L011K4 board. It includes a UART interface for processing specific text commands and controlling LEDs connected to GPIO pins.
+This project is designed for the STM32 NUCLEO-L011K4 board that uses STM32L011K4T6 MCU. It includes a UART interface for processing specific text commands and controlling LEDs connected to GPIO pins.
 
 ## How to build
 
